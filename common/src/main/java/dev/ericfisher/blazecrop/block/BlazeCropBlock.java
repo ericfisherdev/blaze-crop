@@ -73,7 +73,8 @@ public class BlazeCropBlock extends CropBlock {
 
   @Override
   public boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
-    return state.is(Blocks.FARMLAND) || state.is(ModBlocks.TILLED_NETHERRACK.get());
+    // Blaze crops only grow on tilled netherrack.
+    return state.is(ModBlocks.TILLED_NETHERRACK.get());
   }
 
   @Override
@@ -103,9 +104,8 @@ public class BlazeCropBlock extends CropBlock {
     return hasSufficientLight(worldIn.getBlockState(pos.below()), worldIn, pos);
   }
 
-  // Reimplementing the whole thing because it's static, and we don't want to penalize tilled end
-  // stone
-  @SuppressWarnings("UnreachableCode")
+  // Reimplementing the whole thing because it's static, and we don't want to penalize tilled
+  // netherrack.
   protected static float getGrowthSpeed(
       Block block, BlockState centerSoilState, Level level, BlockPos pos) {
     float f = 1.0F;
@@ -154,8 +154,7 @@ public class BlazeCropBlock extends CropBlock {
       }
     }
 
-    if (isOnNetherrack(centerSoilState)) f *= BlazeCropConfiguration.tilledNetherMultiplier.get();
-    else f *= BlazeCropConfiguration.tilledSoilMultiplier.get();
+    f *= BlazeCropConfiguration.tilledNetherMultiplier.get();
 
     return f;
   }
