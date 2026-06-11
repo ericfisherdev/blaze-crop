@@ -37,7 +37,10 @@ public class BlazeCropBlock extends CropBlock {
           .noOcclusion()
           .randomTicks()
           .instabreak()
-          .sound(SoundType.CROP);
+          .sound(SoundType.CROP)
+          // Past the halfway point of growth (age > MAX_AGE / 2, i.e. age >= 4) the crop glows at
+          // torch level as a "ready to harvest" tell; younger crops emit no light.
+          .lightLevel(state -> state.getValue(AGE) > MAX_AGE / 2 ? 14 : 0);
 
   public BlazeCropBlock() {
     super(PROPERTIES);
