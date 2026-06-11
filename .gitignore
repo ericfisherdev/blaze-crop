@@ -7,3 +7,4 @@ run-server/
 !/.idea/icon.png
 src/test/
 logs/
+.claude/
