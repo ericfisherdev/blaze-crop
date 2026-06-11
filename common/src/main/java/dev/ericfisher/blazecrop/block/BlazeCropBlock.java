@@ -17,6 +17,7 @@ import net.minecraft.world.entity.monster.Blaze;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -41,6 +42,11 @@ public class BlazeCropBlock extends CropBlock {
           // Past the halfway point of growth (age > MAX_AGE / 2, i.e. age >= 4) the crop glows at
           // torch level as a "ready to harvest" tell; younger crops emit no light.
           .lightLevel(state -> state.getValue(AGE) > MAX_AGE / 2 ? 14 : 0);
+
+  /**
+   * Half-extent of the cube a mature crop can ignite within (a flammable block within 5 blocks).
+   */
+  public static final int FIRE_SPREAD_RANGE = 5;
 
   public BlazeCropBlock() {
     super(PROPERTIES);
@@ -149,19 +155,63 @@ public class BlazeCropBlock extends CropBlock {
   @Override
   public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
     if (!level.isLoaded(pos)) return; // Neoforge
+    if (this.isMaxAge(state)) {
+      trySpreadFire(level, pos, random);
+      return;
+    }
     final BlockState soilState = level.getBlockState(pos.below());
     if (hasSufficientLight(soilState, level, pos)) {
       final int age = this.getAge(state);
-      if (!this.isMaxAge(state)) {
-        final float growthChance = getGrowthSpeed(this, soilState, level, pos);
-        final boolean doGrow =
-            growthChance > 0 && random.nextInt((int) (25.0F / growthChance) + 1) == 0;
-        if (ModExpectPlatform.onCropsGrowPre(level, pos, state, doGrow)) { // Neoforge
-          level.setBlock(pos, this.getStateForAge(age + 1), 2);
-          ModExpectPlatform.onCropsGrowPost(level, pos, state); // Neoforge
-        }
+      final float growthChance = getGrowthSpeed(this, soilState, level, pos);
+      final boolean doGrow =
+          growthChance > 0 && random.nextInt((int) (25.0F / growthChance) + 1) == 0;
+      if (ModExpectPlatform.onCropsGrowPre(level, pos, state, doGrow)) { // Neoforge
+        level.setBlock(pos, this.getStateForAge(age + 1), 2);
+        ModExpectPlatform.onCropsGrowPost(level, pos, state); // Neoforge
       }
     }
+  }
+
+  /**
+   * At max age, a Blaze Crop may ignite a single flammable block within {@link #FIRE_SPREAD_RANGE}
+   * blocks. Gated by the vanilla {@code doFireTick} gamerule and the {@code fireSpreadChance}
+   * config (1-in-N, 0 disables). Reuses vanilla flammability via {@link
+   * BaseFireBlock#canBePlacedAt} and never ignites a cell on or adjacent to the farm (Blaze Crops /
+   * Tilled Netherrack).
+   */
+  private static void trySpreadFire(ServerLevel level, BlockPos cropPos, RandomSource random) {
+    final int chance = BlazeCropConfiguration.fireSpreadChance.get();
+    if (chance <= 0 || !level.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK)) {
+      return;
+    }
+    if (random.nextInt(chance) != 0) {
+      return;
+    }
+    final int span = FIRE_SPREAD_RANGE * 2 + 1;
+    final BlockPos target =
+        cropPos.offset(
+            random.nextInt(span) - FIRE_SPREAD_RANGE,
+            random.nextInt(span) - FIRE_SPREAD_RANGE,
+            random.nextInt(span) - FIRE_SPREAD_RANGE);
+    if (!level.isLoaded(target)
+        || !BaseFireBlock.canBePlacedAt(level, target, Direction.UP)
+        || touchesFarm(level, target)) {
+      return;
+    }
+    level.setBlock(target, BaseFireBlock.getState(level, target), Block.UPDATE_ALL);
+  }
+
+  /**
+   * True if {@code pos} or any of its 26 surrounding cells is a Blaze Crop or Tilled Netherrack.
+   */
+  private static boolean touchesFarm(LevelReader level, BlockPos pos) {
+    for (BlockPos cursor : BlockPos.betweenClosed(pos.offset(-1, -1, -1), pos.offset(1, 1, 1))) {
+      final Block block = level.getBlockState(cursor).getBlock();
+      if (block instanceof BlazeCropBlock || block instanceof TilledNetherrackBlock) {
+        return true;
+      }
+    }
+    return false;
   }
 
   public static boolean hasSufficientLight(

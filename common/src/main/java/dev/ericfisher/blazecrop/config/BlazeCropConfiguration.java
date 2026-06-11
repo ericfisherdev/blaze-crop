@@ -1,6 +1,7 @@
 package dev.ericfisher.blazecrop.config;
 
 import dev.ericfisher.blazecrop.BlazeCrop;
+import dev.ericfisher.blazecrop.block.BlazeCropBlock;
 import net.minecraft.network.chat.Component;
 import net.neoforged.fml.config.IConfigSpec.ILoadedConfig;
 import net.neoforged.neoforge.common.ModConfigSpec;
@@ -14,6 +15,7 @@ public final class BlazeCropConfiguration {
   public static ConfigValue<Integer, ModConfigSpec.IntValue> blazeChance;
   public static ConfigValue<Boolean, ModConfigSpec.BooleanValue> netherrackNeedsUnbreaking;
   public static ConfigValue<Boolean, ModConfigSpec.BooleanValue> rightClickHarvest;
+  public static ConfigValue<Integer, ModConfigSpec.IntValue> fireSpreadChance;
 
   static {
     final ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
@@ -61,6 +63,18 @@ public final class BlazeCropConfiguration {
             true,
             "Allow harvesting a fully grown Blaze Crop by right-clicking it.",
             "Drops the produce and replants the crop in place, leaving one seed behind.");
+    fireSpreadChance =
+        ConfigValue.defineInt(
+            builder,
+            "fireSpreadChance",
+            24,
+            0,
+            Integer.MAX_VALUE,
+            "Chance, per random tick of a fully grown Blaze Crop, to ignite a flammable block within "
+                + BlazeCropBlock.FIRE_SPREAD_RANGE
+                + " blocks.",
+            "Requires the vanilla doFireTick gamerule; never ignites Blaze Crops or Tilled Netherrack.",
+            "Example: 24 -> 1 in 24 chance. 0 to disable.");
   }
 
   public static void onLoad(String configFile, ILoadedConfig configData) {
