@@ -9,8 +9,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.NetherrackBlock;
 import net.minecraft.world.phys.Vec2;
 import snownee.jade.api.*;
 import snownee.jade.api.config.IPluginConfig;
@@ -22,7 +22,10 @@ public class WailaCompatibility implements IWailaPlugin {
   @Override
   public void registerClient(IWailaClientRegistration registration) {
     registration.registerBlockComponent(BlazeCropGrowthProvider.INSTANCE, BlazeCropBlock.class);
-    registration.registerBlockComponent(NetherrackTillingProvider.INSTANCE, Block.class);
+    // Scoped to NetherrackBlock so Jade no longer invokes the provider for every block the player
+    // looks at. The provider itself still guards on the vanilla Blocks.NETHERRACK instance, since
+    // that is the only block the hoe tilling hook registers.
+    registration.registerBlockComponent(NetherrackTillingProvider.INSTANCE, NetherrackBlock.class);
   }
 
   public enum BlazeCropGrowthProvider implements IBlockComponentProvider {
