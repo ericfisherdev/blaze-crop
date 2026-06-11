@@ -24,6 +24,9 @@
     "main": [
       "dev.ericfisher.blazecrop.fabric.BlazeCrop"
     ],
+    "client": [
+      "dev.ericfisher.blazecrop.fabric.BlazeCropClient"
+    ],
     "modmenu": [
       "dev.ericfisher.blazecrop.fabric.config.ConfigScreen"
     ],
