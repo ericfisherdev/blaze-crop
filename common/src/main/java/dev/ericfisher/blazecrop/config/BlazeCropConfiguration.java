@@ -9,7 +9,6 @@ import org.jetbrains.annotations.Nullable;
 public final class BlazeCropConfiguration {
 
   public static final ModConfigSpec COMMON_CONFIG;
-  public static ConfigValue<Double, ModConfigSpec.DoubleValue> tilledSoilMultiplier;
   public static ConfigValue<Double, ModConfigSpec.DoubleValue> tilledNetherMultiplier;
   public static ConfigValue<Boolean, ModConfigSpec.BooleanValue> tilledNetherrack;
   public static ConfigValue<Integer, ModConfigSpec.IntValue> blazeChance;
@@ -22,23 +21,15 @@ public final class BlazeCropConfiguration {
   }
 
   public static void buildConfig(ModConfigSpec.Builder builder) {
-    tilledSoilMultiplier =
-        ConfigValue.defineDouble(
-            builder,
-            "tilledSoilMultiplier",
-            0.5D,
-            0.0D,
-            25.0D,
-            "Crop growth multiplier on farmland, this value multiplies the default vanilla growth rate.",
-            "Example: 10.5 -> Ten and a half times the speed of vanilla crop growth.");
     tilledNetherMultiplier =
         ConfigValue.defineDouble(
             builder,
             "tilledNetherMultiplier",
-            1.0D,
+            0.5D,
             0.0D,
             25.0D,
             "Crop growth multiplier on tilled netherrack, this value multiplies the default vanilla growth rate.",
+            "Default 0.5 -> half the speed of wheat, i.e. roughly double the base growth time.",
             "Example: 10.5 -> Ten and a half times the speed of vanilla crop growth.");
     tilledNetherrack =
         ConfigValue.defineBoolean(

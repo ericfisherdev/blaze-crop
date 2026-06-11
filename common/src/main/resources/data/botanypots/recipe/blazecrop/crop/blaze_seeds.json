@@ -13,8 +13,7 @@
   "block": "blazecrop:blaze_crop",
   "input": {"item": "blazecrop:blaze_seeds"},
   "soil": [
-    {"tag": "botanypots:soil/dirt"},
     {"tag": "botanypots:soil/nether"}
   ],
-  "grow_time": 48000
+  "grow_time": 96000
 }

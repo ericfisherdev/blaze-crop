@@ -1,4 +1,6 @@
-# Blaze Crop
+<p align="center">
+  <img src="docs/logo.png" alt="Blaze Crop" width="517">
+</p>
 
 A multi-loader (Fabric + NeoForge) Minecraft mod that lets you farm Blaze Rods.
 Built with [Architectury](https://docs.architectury.dev/) for Minecraft **1.21.1**.
@@ -14,15 +16,10 @@ the 8<sup>th</sup> stage it drops 1–2 Blaze Rods and sometimes an extra seed.
 
 ### Growth
 
-**On farmland:**
+Blaze crops **only grow on tilled netherrack** — not farmland.
 
-* Follows vanilla Minecraft [growth rules](https://minecraft.fandom.com/wiki/Tutorials/Crop_farming#Growth_rate), but at 50% the rate of wheat (configurable).
-* Requires light level < 7 to grow.
-
-**On tilled netherrack:**
-
-* Follows vanilla Minecraft [growth rules](https://minecraft.fandom.com/wiki/Tutorials/Crop_farming#Growth_rate) at the same rate as wheat (configurable).
-* Requires any light level.
+* Follows vanilla Minecraft [growth rules](https://minecraft.fandom.com/wiki/Tutorials/Crop_farming#Growth_rate) at **half the rate of wheat**, i.e. roughly double the base growth time (configurable via `tilledNetherMultiplier`).
+* Grows at any light level.
 * 1 in 50 chance to spawn a Blaze on harvest (configurable).
 
 ## The Seeds
@@ -42,11 +39,14 @@ RSR
 To obtain tilled netherrack, right-click regular netherrack with a hoe that has been
 enchanted with Unbreaking I (configurable) or a hoe-like tool (AIOT, Kama, Scythe).
 
+Tilled netherrack is kept moist by **nearby lava** (within 4 blocks) — water and rain
+have no effect. Dry tilled netherrack with nothing planted on it reverts to netherrack.
+
 ## Mod Compatibility
 
 * **Jade / WTHIT** — shows growth-blocked / light-level / tillability hints.
 * **The One Probe** (NeoForge) — same HUD info.
-* **Botany Pots** — blaze seeds can be grown in pots on dirt or nether soil.
+* **Botany Pots** — blaze seeds grow in pots only on tilled netherrack (place netherrack in a pot and till it); the pot grow time is doubled, with Ender Crop's `2.0` soil growth modifier.
 
 ## Building
 

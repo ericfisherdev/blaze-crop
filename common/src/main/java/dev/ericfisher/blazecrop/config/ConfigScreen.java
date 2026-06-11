@@ -33,8 +33,6 @@ public class ConfigScreen {
 
     Lists.newArrayList(
             ConfigValueToClothEntry.fromDouble(
-                builder, BlazeCropConfiguration.tilledSoilMultiplier),
-            ConfigValueToClothEntry.fromDouble(
                 builder, BlazeCropConfiguration.tilledNetherMultiplier),
             ConfigValueToClothEntry.fromBoolean(builder, BlazeCropConfiguration.tilledNetherrack),
             ConfigValueToClothEntry.fromInt(builder, BlazeCropConfiguration.blazeChance),
