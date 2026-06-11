@@ -37,7 +37,8 @@ public class ConfigScreen {
             ConfigValueToClothEntry.fromBoolean(builder, BlazeCropConfiguration.tilledNetherrack),
             ConfigValueToClothEntry.fromInt(builder, BlazeCropConfiguration.blazeChance),
             ConfigValueToClothEntry.fromBoolean(
-                builder, BlazeCropConfiguration.netherrackNeedsUnbreaking))
+                builder, BlazeCropConfiguration.netherrackNeedsUnbreaking),
+            ConfigValueToClothEntry.fromBoolean(builder, BlazeCropConfiguration.rightClickHarvest))
         .forEach(defaultCategory::addEntry);
 
     return builder.build();

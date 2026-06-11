@@ -14,6 +14,10 @@ Built with [Architectury](https://docs.architectury.dev/) for Minecraft **1.21.1
 The blaze crop has 8 growth stages. Harvesting it at any stage drops Blaze Seeds; at
 the 8<sup>th</sup> stage it drops 1–2 Blaze Rods and sometimes an extra seed.
 
+A fully grown crop can also be **harvested by right-clicking it** (configurable via
+`rightClickHarvest`): the produce drops and the crop is replanted in place, leaving one
+seed behind.
+
 ### Growth
 
 Blaze crops **only grow on tilled netherrack** — not farmland.
