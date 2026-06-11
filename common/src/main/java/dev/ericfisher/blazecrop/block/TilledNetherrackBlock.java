@@ -27,7 +27,9 @@ public class TilledNetherrackBlock extends FarmBlock {
           .destroyTime(0.6F)
           .requiresCorrectToolForDrops()
           .strength(3.0F, 9.0F)
-          .sound(SoundType.NETHERRACK);
+          .sound(SoundType.NETHERRACK)
+          // Moistened (lava-kept) soil glows at redstone-torch level; dry soil is dark.
+          .lightLevel(state -> state.getValue(MOISTURE) > 0 ? 7 : 0);
 
   public TilledNetherrackBlock() {
     super(PROPERTIES);
