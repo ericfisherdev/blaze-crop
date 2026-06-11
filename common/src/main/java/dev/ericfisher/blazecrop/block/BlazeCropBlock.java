@@ -155,6 +155,9 @@ public class BlazeCropBlock extends CropBlock {
   @Override
   public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
     if (!level.isLoaded(pos)) return; // Neoforge
+    if (tryRainDestroy(level, pos, random)) {
+      return; // crop was washed out; nothing left to grow or ignite
+    }
     if (this.isMaxAge(state)) {
       trySpreadFire(level, pos, random);
       return;
@@ -170,6 +173,30 @@ public class BlazeCropBlock extends CropBlock {
         ModExpectPlatform.onCropsGrowPost(level, pos, state); // Neoforge
       }
     }
+  }
+
+  /**
+   * While it is raining on a sky-exposed crop, the crop may be washed out and destroyed with no
+   * drops. Gated by the {@code rainDestroyChance} config (1-in-N, 0 disables). {@link
+   * Level#isRainingAt} already excludes the Nether, dry biomes, and covered crops. Returns true if
+   * the crop was destroyed.
+   *
+   * <p>This is intentional game design, not an oversight: tilled netherrack and blaze crops can be
+   * built in the Overworld (tilling only needs netherrack, which players can place anywhere), so a
+   * naive uncovered farm under open sky is a real scenario. Rain destruction is the thematic
+   * downside of exposing a nether plant to the sky and is independent of the lava-moisture
+   * mechanic, which governs growth speed rather than rain immunity.
+   */
+  private static boolean tryRainDestroy(ServerLevel level, BlockPos pos, RandomSource random) {
+    final int chance = BlazeCropConfiguration.rainDestroyChance.get();
+    if (chance <= 0 || !level.isRainingAt(pos)) {
+      return false;
+    }
+    if (random.nextInt(chance) != 0) {
+      return false;
+    }
+    return level.destroyBlock(
+        pos, false); // false -> no drops, but break particles/sound still play
   }
 
   /**

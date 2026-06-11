@@ -16,6 +16,7 @@ public final class BlazeCropConfiguration {
   public static ConfigValue<Boolean, ModConfigSpec.BooleanValue> netherrackNeedsUnbreaking;
   public static ConfigValue<Boolean, ModConfigSpec.BooleanValue> rightClickHarvest;
   public static ConfigValue<Integer, ModConfigSpec.IntValue> fireSpreadChance;
+  public static ConfigValue<Integer, ModConfigSpec.IntValue> rainDestroyChance;
 
   static {
     final ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
@@ -74,6 +75,16 @@ public final class BlazeCropConfiguration {
                 + BlazeCropBlock.FIRE_SPREAD_RANGE
                 + " blocks.",
             "Requires the vanilla doFireTick gamerule; never ignites Blaze Crops or Tilled Netherrack.",
+            "Example: 24 -> 1 in 24 chance. 0 to disable.");
+    rainDestroyChance =
+        ConfigValue.defineInt(
+            builder,
+            "rainDestroyChance",
+            24,
+            0,
+            Integer.MAX_VALUE,
+            "Chance, per random tick, that rain destroys a sky-exposed Blaze Crop (no drops).",
+            "Only applies where it is actually raining (open sky, rainy biome) -- not the Nether, dry biomes, or covered crops.",
             "Example: 24 -> 1 in 24 chance. 0 to disable.");
   }
 
