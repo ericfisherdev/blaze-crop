@@ -13,6 +13,7 @@ public final class BlazeCropConfiguration {
   public static ConfigValue<Boolean, ModConfigSpec.BooleanValue> tilledNetherrack;
   public static ConfigValue<Integer, ModConfigSpec.IntValue> blazeChance;
   public static ConfigValue<Boolean, ModConfigSpec.BooleanValue> netherrackNeedsUnbreaking;
+  public static ConfigValue<Boolean, ModConfigSpec.BooleanValue> rightClickHarvest;
 
   static {
     final ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
@@ -53,6 +54,13 @@ public final class BlazeCropConfiguration {
             "netherrackNeedsUnbreaking",
             true,
             "Require a hoe to be enchanted with Unbreaking (I) to till Netherrack.");
+    rightClickHarvest =
+        ConfigValue.defineBoolean(
+            builder,
+            "rightClickHarvest",
+            true,
+            "Allow harvesting a fully grown Blaze Crop by right-clicking it.",
+            "Drops the produce and replants the crop in place, leaving one seed behind.");
   }
 
   public static void onLoad(String configFile, ILoadedConfig configData) {
