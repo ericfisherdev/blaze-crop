@@ -46,10 +46,11 @@ public final class CompatHudInfo {
 
   public static CompatHudInfo forCrop(BlockState blockState, LevelReader level, BlockPos pos) {
     BlazeCropBlock crop = (BlazeCropBlock) blockState.getBlock();
+    int light = level.getRawBrightness(pos, 0);
     boolean notGrowing =
-        !crop.isMaxAge(blockState) && !BlazeCropBlock.hasSufficientLight(level, pos);
-    int light = notGrowing ? level.getRawBrightness(pos, 0) : -1;
-    return new CompatHudInfo(notGrowing, light, false, -1, false, false, false);
+        !crop.isMaxAge(blockState)
+            && !BlazeCropBlock.hasSufficientLight(level.getBlockState(pos.below()), light);
+    return new CompatHudInfo(notGrowing, notGrowing ? light : -1, false, -1, false, false, false);
   }
 
   public static CompatHudInfo forTilledNetherrack(BlockState blockState) {

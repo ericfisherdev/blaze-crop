@@ -14,7 +14,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.fml.InterModComms;
 
 public final class TOPCompatibility implements Function<ITheOneProbe, Void> {
-  private static ITheOneProbe probe;
 
   public static void register() {
     InterModComms.sendTo("theoneprobe", "GetTheOneProbe", TOPCompatibility::new);
@@ -22,12 +21,11 @@ public final class TOPCompatibility implements Function<ITheOneProbe, Void> {
 
   @Nullable @Override
   public Void apply(ITheOneProbe theOneProbe) {
-    probe = theOneProbe;
-    probe.registerProvider(
+    theOneProbe.registerProvider(
         new IProbeInfoProvider() {
           @Override
           public ResourceLocation getID() {
-            return ResourceLocation.withDefaultNamespace(Reference.MOD_ID);
+            return ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "probe_provider");
           }
 
           @Override

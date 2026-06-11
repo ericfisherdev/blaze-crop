@@ -129,10 +129,11 @@ public class BlazeCropBlock extends CropBlock {
   }
 
   private static void maybeSpawnBlaze(Level level, BlockPos pos, Player player) {
-    if (BlazeCropConfiguration.blazeChance.get() <= 0 || !isOnNetherrack(level, pos)) {
+    final int chance = BlazeCropConfiguration.blazeChance.get();
+    if (chance <= 0 || !isOnNetherrack(level, pos)) {
       return;
     }
-    if (level.random.nextInt(BlazeCropConfiguration.blazeChance.get()) != 0) {
+    if (level.random.nextInt(chance) != 0) {
       return;
     }
     final Blaze blaze = EntityType.BLAZE.create(level);
@@ -250,6 +251,15 @@ public class BlazeCropBlock extends CropBlock {
   public static boolean hasSufficientLight(
       BlockState soilState, LevelReader worldIn, BlockPos pos) {
     return isOnNetherrack(soilState) || worldIn.getRawBrightness(pos, 0) <= 7;
+  }
+
+  /**
+   * Variant taking a precomputed raw brightness, for callers that already looked it up (e.g. HUD
+   * providers that also display the value). Same rule as {@link #hasSufficientLight(BlockState,
+   * LevelReader, BlockPos)}.
+   */
+  public static boolean hasSufficientLight(BlockState soilState, int rawBrightness) {
+    return isOnNetherrack(soilState) || rawBrightness <= 7;
   }
 
   public static boolean hasSufficientLight(LevelReader worldIn, BlockPos pos) {
