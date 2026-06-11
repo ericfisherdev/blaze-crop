@@ -98,7 +98,7 @@ public class BlazeCropBlock extends CropBlock {
       return false;
     }
     if (level instanceof ServerLevel serverLevel) {
-      dropHarvestProduce(serverLevel, pos, state);
+      dropHarvestProduce(serverLevel, pos, state, player);
       maybeSpawnBlaze(serverLevel, pos, player);
       serverLevel.setBlock(pos, this.getStateForAge(0), Block.UPDATE_CLIENTS);
       serverLevel.playSound(
@@ -107,11 +107,17 @@ public class BlazeCropBlock extends CropBlock {
     return true;
   }
 
-  /** Drops this block's loot but withholds one seed, which becomes the replanted crop. */
-  private void dropHarvestProduce(ServerLevel level, BlockPos pos, BlockState state) {
+  /**
+   * Drops this block's loot but withholds one seed, which becomes the replanted crop. The
+   * harvester's held item is passed as the loot-context tool so enchantment-aware loot functions
+   * (e.g. Fortune's {@code apply_bonus}) pay out the same as breaking the block.
+   */
+  private void dropHarvestProduce(
+      ServerLevel level, BlockPos pos, BlockState state, Player player) {
     final ItemLike replantSeed = this.getBaseSeedId();
     boolean seedWithheld = false;
-    for (ItemStack drop : Block.getDrops(state, level, pos, null)) {
+    for (ItemStack drop :
+        Block.getDrops(state, level, pos, null, player, player.getMainHandItem())) {
       if (!seedWithheld && drop.is(replantSeed.asItem())) {
         drop.shrink(1);
         seedWithheld = true;
