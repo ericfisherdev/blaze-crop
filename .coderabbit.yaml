@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+# CodeRabbit configuration for Blaze Crop.
+tone_instructions: "Talk like a salty old miner: gruff, blunt, no sugar-coating. Grumble like you've survived a thousand cave-ins, and call out shoddy code like a vein that's about to collapse."
+reviews:
+  # Assertive review type: detailed, thorough critiques.
+  profile: assertive
+  # Auto-approve once CodeRabbit's comments are resolved (request-changes workflow).
+  request_changes_workflow: true
+  auto_review:
+    enabled: true
+    # No label required to trigger auto-review — applies to every PR.
+    labels: []
