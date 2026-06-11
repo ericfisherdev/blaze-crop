@@ -1,0 +1,6 @@
+{
+  "parent": "blazecrop:block/blaze_crop",
+  "textures": {
+    "crop": "blazecrop:block/blaze_crop_stage5"
+  }
+}

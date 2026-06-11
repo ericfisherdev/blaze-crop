@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${version}",
+  "name": "${mod_name}",
+  "description": "${mod_description}",
+  "authors": [
+    {
+      "name": "${mod_author}",
+      "contact": {
+        "homepage": "https://github.com/ericfisherdev"
+      }
+    }
+  ],
+  "contact": {
+    "homepage": "${mod_url}",
+    "sources": "${mod_url}/tree/main",
+    "issues": "${mod_url}/issues"
+  },
+  "license": "${mod_licence}",
+  "icon": "icon-fabric.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "dev.ericfisher.blazecrop.fabric.BlazeCrop"
+    ],
+    "modmenu": [
+      "dev.ericfisher.blazecrop.fabric.config.ConfigScreen"
+    ],
+    "jade": [
+      "dev.ericfisher.blazecrop.compat.WailaCompatibility"
+    ]
+  },
+  "depends": {
+    "fabric": "*",
+    "minecraft": ">=1.21.1",
+    "architectury": ">=${architectury_version}",
+    "forgeconfigapiport": ">=8.0.0"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "item.blazecrop.blaze_seeds": "Blaze Seeds",
+  "block.blazecrop.blaze_crop": "Blaze Crop",
+  "block.blazecrop.tilled_netherrack": "Tilled Netherrack",
+  "blazecrop.alert.hoe": "This block can only be tilled by a hoe enchanted with Unbreaking I+",
+  "blazecrop.alert.hoetool": "This block can only be tilled by a tool with mining level %s",
+  "blazecrop.tip.seed": "Plant on farmland or tilled netherrack",
+  "blazecrop.wailatop.nogrowth": "Can't grow",
+  "blazecrop.wailatop.moist": "Moist",
+  "blazecrop.wailatop.dry": "Dry",
+  "blazecrop.wailatop.light": "Light",
+  "blazecrop.waila.hoeable": "Can till",
+  "blazecrop.waila.nothoeable": "Can't till",
+  "blazecrop.waila:till": "Till",
+  "blazecrop.top.hoe": "Hoe",
+  "config.jade.plugin_blazecrop.tilled_netherrack": "Netherrack Tilling",
+  "config.jade.plugin_blazecrop.blaze_crop": "Blaze Crop Info"
+}

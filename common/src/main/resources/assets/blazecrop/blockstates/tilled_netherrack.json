@@ -1,0 +1,32 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "transform": "forge:default-block"
+  },
+  "variants": {
+    "moisture=0": {
+      "model": "blazecrop:block/tilled_netherrack_dry"
+    },
+    "moisture=1": {
+      "model": "blazecrop:block/tilled_netherrack_dry"
+    },
+    "moisture=2": {
+      "model": "blazecrop:block/tilled_netherrack_dry"
+    },
+    "moisture=3": {
+      "model": "blazecrop:block/tilled_netherrack_dry"
+    },
+    "moisture=4": {
+      "model": "blazecrop:block/tilled_netherrack_dry"
+    },
+    "moisture=5": {
+      "model": "blazecrop:block/tilled_netherrack_dry"
+    },
+    "moisture=6": {
+      "model": "blazecrop:block/tilled_netherrack_dry"
+    },
+    "moisture=7": {
+      "model": "blazecrop:block/tilled_netherrack_moist"
+    }
+  }
+}

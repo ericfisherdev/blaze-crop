@@ -1,0 +1,20 @@
+{
+  "neoforge:conditions": [
+    {"type": "neoforge:mod_loaded", "modid": "botanypots"}
+  ],
+  "fabric:load_conditions": [
+    {"condition": "fabric:all_mods_loaded", "values": ["botanypots"]}
+  ],
+  "bookshelf:load_conditions": [
+    {"type": "bookshelf:mod_loaded", "values": ["botanypots"]},
+    {"type": "bookshelf:block_exists", "values": ["blazecrop:blaze_crop"]}
+  ],
+  "type": "botanypots:block_derived_crop",
+  "block": "blazecrop:blaze_crop",
+  "input": {"item": "blazecrop:blaze_seeds"},
+  "soil": [
+    {"tag": "botanypots:soil/dirt"},
+    {"tag": "botanypots:soil/nether"}
+  ],
+  "grow_time": 48000
+}

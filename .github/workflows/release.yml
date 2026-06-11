@@ -1,0 +1,88 @@
+on:
+  release:
+    types: [published]
+
+jobs:
+  call-build:
+    uses: ./.github/workflows/build.yml
+  verify-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v5
+      - name: Compare mod version and release tag
+        run: |
+          mod_version="$(grep '^mod_version=' gradle.properties | cut -d'=' -f2)"
+          echo "::group::Versions"
+          echo "Mod version = ${mod_version}"
+          echo "Release tag = ${{ github.event.release.tag_name }}"
+          echo "::endgroup::"
+          if [ "${mod_version}" != "${{ github.event.release.tag_name }}" ]; then
+            echo "::error file=gradle.properties::mod_version does not match release tag (expected ${mod_version}, got ${{ github.event.release.tag_name }})"
+            exit 1
+          fi
+  upload-artifacts:
+    needs: [call-build, verify-version]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download built jars
+        uses: actions/download-artifact@v5
+        with:
+          name: jars
+          path: jars
+      - name: Upload jars to release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload ${{ github.event.release.tag_name }} $(find jars -name '*.jar') --repo ${{ github.repository }}
+
+  publish-fabric:
+    needs: [call-build, verify-version]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download built jars
+        uses: actions/download-artifact@v5
+        with:
+          name: jars
+          path: jars
+      - name: Publish Fabric jar
+        uses: Kir-Antipov/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659 # v3.3
+        with:
+          curseforge-id: 0 # TODO: set your CurseForge project ID once the project exists
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          modrinth-id: blaze-crop
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          files: jars/fabric/build/libs/blazecrop-*-fabric.jar
+          name: Blaze Crop ${{ github.event.release.tag_name }} (Fabric)
+          version: ${{ github.event.release.tag_name }}
+          version-type: ${{ github.event.release.prerelease && 'beta' || 'release' }}
+          changelog: ${{ github.event.release.body }}
+          loaders: fabric
+          game-versions: 1.21.1
+          java: 21
+
+  publish-neoforge:
+    needs: [call-build, verify-version]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download built jars
+        uses: actions/download-artifact@v5
+        with:
+          name: jars
+          path: jars
+      - name: Publish NeoForge jar
+        uses: Kir-Antipov/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659 # v3.3
+        with:
+          curseforge-id: 0 # TODO: set your CurseForge project ID once the project exists
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          modrinth-id: blaze-crop
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          files: jars/neoforge/build/libs/blazecrop-*-neoforge.jar
+          name: Blaze Crop ${{ github.event.release.tag_name }} (NeoForge)
+          version: ${{ github.event.release.tag_name }}
+          version-type: ${{ github.event.release.prerelease && 'beta' || 'release' }}
+          changelog: ${{ github.event.release.body }}
+          loaders: neoforge
+          game-versions: 1.21.1
+          java: 21

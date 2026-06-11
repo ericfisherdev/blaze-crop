@@ -1,0 +1,17 @@
+{
+  "neoforge:conditions": [
+    {"type": "neoforge:mod_loaded", "modid": "botanypots"}
+  ],
+  "fabric:load_conditions": [
+    {"condition": "fabric:all_mods_loaded", "values": ["botanypots"]}
+  ],
+  "bookshelf:load_conditions": [
+    {"type": "bookshelf:mod_loaded", "values": ["botanypots"]},
+    {"type": "bookshelf:block_exists", "values": ["blazecrop:tilled_netherrack"]}
+  ],
+  "type": "botanypots:pot_interaction",
+  "held_item": {"tag": "minecraft:hoes"},
+  "soil_item": {"item": "minecraft:netherrack"},
+  "new_soil": {"id": "blazecrop:tilled_netherrack"},
+  "sound_effect": {"id": "minecraft:item.hoe.till", "category": "BLOCKS"}
+}

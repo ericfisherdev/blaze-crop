@@ -1,0 +1,8 @@
+{
+  "parent": "blazecrop:block/tilled_netherrack",
+  "textures": {
+    "particle": "block/netherrack",
+    "netherrack": "block/netherrack",
+    "top": "blazecrop:block/tilled_netherrack_moist"
+  }
+}

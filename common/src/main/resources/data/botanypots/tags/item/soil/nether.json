@@ -1,0 +1,6 @@
+{
+  "replace": false,
+  "values": [
+    {"id": "blazecrop:tilled_netherrack", "required": false}
+  ]
+}
